@@ -110,23 +110,18 @@ class DroneServer(socketserver.BaseRequestHandler):
         s = self.request[1]
 
         # DEBUG
+        # DEBUG
         now = datetime.datetime.now()
-        LOGGER.debug(f"Time: {now.strftime('%H:%M:%S')}")
-        LOGGER.debug(f"Thread: {current_thread}")
-        LOGGER.debug(f"{self.client_address[0]} wrote:")
-        LOGGER.debug(f"Data: {data}")
+        print(f"Time: {now.strftime('%H:%M:%S')}")
+        print(f"Thread: {current_thread}")
+        print(f"{self.client_address[0]} wrote:")
+        print(f"Data: {data}")
 
         # get drone's response
         response = self.drones[self.client_address].dispatcher(data)
         s.sendto(bytes(response, 'utf-8'), self.client_address)
 
-        LOGGER.info(f"Sent Response: {response}")
-
-        state_thread = threading.Thread(target=self.send_state_information())
-        state_thread.daemon = True
-        state_thread.start()
-
-        # send state information to port 8890
+        print(f"Sent Response: {response}")
 
 
 class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
